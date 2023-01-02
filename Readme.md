@@ -1,4 +1,5 @@
 # Azure Blob Backup
+[![Build](https://github.com/floriankramer/azure-blob-backup/actions/workflows/build.yml/badge.svg)](https://github.com/floriankramer/azure-blob-backup/actions/workflows/build.yml)
 
 This is a rust implementation of an incremental backup service using azure blob
 storage as its storage backend. 
