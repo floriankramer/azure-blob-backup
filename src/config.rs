@@ -18,11 +18,12 @@
 use anyhow::anyhow;
 use anyhow::Result;
 use yaml_rust;
+use anyhow::Context;
 
 pub struct Config(yaml_rust::Yaml);
 
 pub fn load(path: &str) -> Result<Config> {
-    let raw = std::fs::read_to_string(path)?;
+    let raw = std::fs::read_to_string(path).with_context(|| "unable to read the config file")?;
 
     let docs = yaml_rust::YamlLoader::load_from_str(&raw)?;
 

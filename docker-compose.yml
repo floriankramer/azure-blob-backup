@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backup:
-    image: azure-blob-backup
+    image: ghcr.io/floriankramer/azure-blob-backup:${VERSION}
     build: .
     volumes:
       - ./config.yaml:/etc/azure_blob_backup/config.yaml:ro

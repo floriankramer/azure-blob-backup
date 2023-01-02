@@ -28,6 +28,8 @@ use tokio;
 async fn main() -> Result<()> {
     simple_logger::init_with_level(log::Level::Info)?;
     
+    log::info!("{}", include_str!("../version"));
+    
     let mut conf_path = "/etc/azure_blob_backup/config.yaml".to_string();
     if args().len() > 1 {
         conf_path = args().nth(1).unwrap_or(conf_path);
