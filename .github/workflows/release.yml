@@ -18,11 +18,17 @@ jobs:
       - name: Build docker image
         run: docker compose build
       - name: Push the image
-        run: docker compose push
-      - name: Create a release
         run: >
-          source version
-          docker create --name temp-image ghcr.io/floriankramer/azure-blob-backup:${VERSION}
-          docker cp temp-image:/usr/local/bin/azure_blob_backup ./azure_blob_backup
-          docker rm -v temp-image
+          source version &&
+          docker compose push &&
+          docker tag ghcr.io/floriankramer/azure-blob-backup:${VERSION} ghcr.io/floriankramer/azure-blob-backup:latest &&
+          docker push ghcr.io/floriankramer/azure-blob-backup:latest
+      - name: Create a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          source version &&
+          docker create --name temp-image ghcr.io/floriankramer/azure-blob-backup:${VERSION} &&
+          docker cp temp-image:/usr/local/bin/azure_blob_backup ./azure_blob_backup &&
+          docker rm -v temp-image &&
           gh release create ${VERSION} "./azure_blob_backup#Alpine"
