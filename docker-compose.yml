@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  backup:
+    image: azure-blob-backup
+    build: .
+    volumes:
+      - ./config.yaml:/etc/azure_blob_backup/config.yaml:ro
+    restart: unless-stopped

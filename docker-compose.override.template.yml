@@ -1,0 +1,5 @@
+version: "3.8"
+services:
+  backup:
+    volumes:
+      - /var/lib/<data-dir>:/mnt/data
