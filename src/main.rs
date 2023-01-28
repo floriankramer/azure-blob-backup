@@ -21,8 +21,6 @@ pub mod config;
 use std::env::args;
 
 use anyhow::Result;
-use simple_logger;
-use tokio;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -39,5 +37,5 @@ async fn main() -> Result<()> {
     
     backup::run(&conf).await?;
     
-    return Ok(())
+    Ok(())
 }

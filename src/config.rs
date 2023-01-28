@@ -14,11 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 use anyhow::anyhow;
+use anyhow::Context;
 use anyhow::Result;
 use yaml_rust;
-use anyhow::Context;
 
 pub struct Config(yaml_rust::Yaml);
 
@@ -27,31 +26,23 @@ pub fn load(path: &str) -> Result<Config> {
 
     let docs = yaml_rust::YamlLoader::load_from_str(&raw)?;
 
-    return Ok(Config(docs[0].clone()));
+    Ok(Config(docs[0].clone()))
 }
 
 impl Config {
     pub fn get_string(&self, name: &str) -> anyhow::Result<String> {
         let maybe_str = self.0[name].as_str();
         match maybe_str {
-            Some(str) => {
-                return Ok(str.to_string());
-            }
-            None => {
-                return Err(anyhow!("No such config key: {}", name));
-            }
+            Some(str) => Ok(str.to_string()),
+            None => Err(anyhow!("No such config key: {}", name)),
         }
     }
 
     pub fn get_i64(&self, name: &str) -> anyhow::Result<i64> {
         let maybe_val = self.0[name].as_i64();
         match maybe_val {
-            Some(val) => {
-                return Ok(val);
-            }
-            None => {
-                return Err(anyhow!("No such config key: {}", name));
-            }
+            Some(val) => Ok(val),
+            None => Err(anyhow!("No such config key: {}", name)),
         }
     }
 }

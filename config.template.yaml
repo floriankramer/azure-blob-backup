@@ -3,4 +3,11 @@ local_root: /mnt/data
 # A sas url with read, write, delete and list permissions for the blob container you want to use.
 sas_url: "<sas url>"
 # How many versions of a file to keep
-num_versions: 4
+# Must not be greater than 7
+num_daily: 7
+# A week is considered as the last 7 days. Must not be greater than 4
+num_weekly: 4
+# For simplicity a month is considered to always have 28 days (4 weeks)
+num_monthly: 12
+# A minimum time before a new version of a file is committed to backup stored in seconds. The default here is 23 hours.
+min_update_age: 82800
