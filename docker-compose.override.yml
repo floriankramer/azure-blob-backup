@@ -1,0 +1,6 @@
+version: "3.8"
+services:
+  backup:
+    volumes:
+      - /home/dwarf/Pictures/Wallpapers/The_Witcher_wallpapers/1920 x 1200:/mnt/data
+    entrypoint: [azure_blob_backup]

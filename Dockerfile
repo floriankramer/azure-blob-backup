@@ -1,17 +1,22 @@
-FROM rust:alpine3.16 AS builder
+FROM rust:slim-buster AS builder
 
-RUN apk add --no-cache openssl-dev pkgconfig musl-dev
+RUN apt update && apt install --yes --no-install-recommends libssl-dev pkg-config
+
+RUN mkdir -p /opt/azure_blob_backup/src
+WORKDIR  /opt/azure_blob_backup
+
+RUN cargo install cargo-chef --locked
+COPY Cargo.lock .
+COPY Cargo.toml .
 
 COPY . /opt/azure_blob_backup
-WORKDIR /opt/azure_blob_backup
 RUN cargo build -r
 
-FROM alpine:3.16 AS runner
+FROM debian:buster-slim AS runner
 
-RUN apk add openssl
+RUN apt update && apt install --yes --no-install-recommends libssl-dev cron
 
 COPY --from=builder /opt/azure_blob_backup/target/release/azure_blob_backup /usr/local/bin
-COPY run_backup.sh /etc/periodic/daily
-RUN chmod 0755 /etc/periodic/daily/run_backup.sh
+COPY crontab /etc/crontab
 
 ENTRYPOINT [ "crond",  "-f" ]

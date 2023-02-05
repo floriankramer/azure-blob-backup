@@ -99,7 +99,7 @@ fn create_local_index(root: &str) -> Result<Index> {
     let walker = walker.follow_links(false);
 
     for entry in walker {
-        let entry = entry.unwrap();
+        let entry = entry?;
         let file_type = entry.file_type();
 
         if file_type.is_file() || file_type.is_symlink() || file_type.is_dir() {
